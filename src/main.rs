@@ -43,7 +43,11 @@ fn populate_world(f_name: &str, world: &Vec<String>, num_rows: &i32, num_cols: &
     let world_str = fs::read_to_string(f_name)
         .expect("Error, could not open file");
 
-    println!("{}", world_str);
+    //Turn world_str into a vector of strings
+    //Iterate through it and turn into heck ton of str slices
+
+
+    //println!("{}", world_str);
 
 }
 
