@@ -24,7 +24,7 @@ fn main() {
 
     populate_world(&f_name, &mut world, &mut num_rows, &mut num_cols);
 
-    //show_world(&world, &num_rows, &num_cols);
+    show_world(&world);
 
     for iteration in 1..num_generations {
         
@@ -50,7 +50,7 @@ fn populate_world(f_name: &str, world: &mut Vec<String>, num_rows: &mut i32, num
     *num_cols = 0;
     for line in file.lines() {
         let line = line.unwrap();
-        println!("{}", &line);
+        //println!("{}", &line);
         world.push(String::from(&line));
         *num_cols += 1;
     }
@@ -58,15 +58,18 @@ fn populate_world(f_name: &str, world: &mut Vec<String>, num_rows: &mut i32, num
     //Make a usize fit into an i32
     *num_rows = world[0].len().try_into().unwrap();
 
-    println!("{} rows\n{} cols", &num_rows, &num_cols);
+    //println!("{} rows\n{} cols", &num_rows, &num_cols);
 
 
 }
 
-//fn show_world(world: &Vec<String>, num_rows: &i32, num_cols: &i32) {
-//
-//}
-//
+fn show_world(world: &Vec<String>) {
+    //Prints each line in the world vector
+    for line in world {
+        println!("{}", line);
+    }
+}
+
 //fn iterate_generations(world: &Vec<String>, num_rows: &i32, num_cols: &i32) {
 //
 //}
