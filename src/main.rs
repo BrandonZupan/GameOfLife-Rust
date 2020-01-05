@@ -16,8 +16,6 @@ fn main() {
     let f_name = "world.txt";
     let num_generations = 2; //set to a smaller number for debugging
 
-    const MAX_ROWS: u32 = 80; //we want the world to fit on one screen
-    
     //array of strings that will hold the grid
     let mut world: Vec<String> = Vec::new();
     
@@ -49,16 +47,16 @@ fn populate_world(f_name: &str, world: &mut Vec<String>, num_rows: &mut i32, num
     let file = BufReader::new(file);
 
     //Not sure if this is a good way to do this, error handling is wack
-    *num_rows = 0;
+    *num_cols = 0;
     for line in file.lines() {
         let line = line.unwrap();
         println!("{}", &line);
         world.push(String::from(&line));
-        *num_rows += 1;
+        *num_cols += 1;
     }
 
     //Make a usize fit into an i32
-    *num_cols = world[0].len().try_into().unwrap();
+    *num_rows = world[0].len().try_into().unwrap();
 
     println!("{} rows\n{} cols", &num_rows, &num_cols);
 
