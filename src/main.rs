@@ -3,7 +3,10 @@
 
 //Derived from Roger Priebe's 312 assignment #2 in C
 
-use std::fs;    //For reading a file
+use std::fs::File;    //For reading a file
+use std::io::BufReader;
+use std::io::prelude::*;
+use std::convert::TryInto;  //For try_into()
 
 
 fn main() {
@@ -16,12 +19,12 @@ fn main() {
     const MAX_ROWS: u32 = 80; //we want the world to fit on one screen
     
     //array of strings that will hold the grid
-    let world: Vec<String> = Vec::new();
+    let mut world: Vec<String> = Vec::new();
     
-    let num_rows = 0;
-    let num_cols = 0;
+    let mut num_rows = 0;
+    let mut num_cols = 0;
 
-    populate_world(&f_name, &world, &num_rows, &num_cols);
+    populate_world(&f_name, &mut world, &mut num_rows, &mut num_cols);
 
     //show_world(&world, &num_rows, &num_cols);
 
@@ -37,17 +40,28 @@ fn main() {
 
 //Funtions
 
-fn populate_world(f_name: &str, world: &Vec<String>, num_rows: &i32, num_cols: &i32) {
+fn populate_world(f_name: &str, world: &mut Vec<String>, num_rows: &mut i32, num_cols: &mut i32) {
     //Fill in the world variable to include the world
     //Open the file and read each line into the world
-    let world_str = fs::read_to_string(f_name)
+    //Used https://doc.rust-lang.org/std/io/trait.BufRead.html
+    let file = File::open(f_name)
         .expect("Error, could not open file");
+    let file = BufReader::new(file);
 
-    //Turn world_str into a vector of strings
-    //Iterate through it and turn into heck ton of str slices
+    //Not sure if this is a good way to do this, error handling is wack
+    *num_rows = 0;
+    for line in file.lines() {
+        let line = line.unwrap();
+        println!("{}", &line);
+        world.push(String::from(&line));
+        *num_rows += 1;
+    }
 
+    //Make a usize fit into an i32
+    *num_cols = world[0].len().try_into().unwrap();
 
-    //println!("{}", world_str);
+    println!("{} rows\n{} cols", &num_rows, &num_cols);
+
 
 }
 
