@@ -10,8 +10,6 @@ use std::convert::TryInto;  //For try_into()
 
 
 fn main() {
-    println!("Hello, world!");
-    
     //edit these two lines and use command line arguments
     let f_name = "world.txt";
     let num_generations = 2; //set to a smaller number for debugging
@@ -52,7 +50,17 @@ fn populate_world(f_name: &str, world: &mut Vec<String>, num_rows: &mut i32, num
     for line in file.lines() {
         let line = line.unwrap();
         //println!("{}", &line);
-        world.push(String::from(&line));
+        let mut column = String::new();
+        for space in line.chars() {
+            if space == '0' {
+                column.push('.');
+            } else if space == '1' {
+                column.push('*');
+            } else {
+                panic!("Error: Unrecognized character");
+            }
+        }
+        world.push(String::from(&column));
         *num_cols += 1;
     }
 
