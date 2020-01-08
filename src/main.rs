@@ -29,6 +29,7 @@ fn main() {
     for iteration in 1..num_generations {
         
         // code to clear screen goes here
+        //print!("\x1B[2J");
 
         //iterate_generations(&world, &num_rows, &num_cols);
 

@@ -1,5 +1,5 @@
 [package]
-name = "Life"
+name = "life"
 version = "0.1.0"
 authors = ["brandon"]
 edition = "2018"
