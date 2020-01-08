@@ -14,11 +14,13 @@ An implementation of the classic game, *Conway's Game of Life*.
 The initial state of the game will be held in a text file. The format will be sequences of ones and zeros (characters). A '1' means that a cell is alive in that square. 
 
 ### Example world
+```
 00000000100000001010
 00000000010000001001
 11100000010100000010
 10100100101010101010
 00101010010010101000
+```
 
 The status of the grid is printed with an asterisk (\*) denoting alive and an period (.) denoting dead.  
 
