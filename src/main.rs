@@ -4,6 +4,7 @@
 //Derived from Roger Priebe's 312 assignment #2 in C
 
 use std::fs::File;    //For reading a file
+use std::io;
 use std::io::BufReader;
 use std::io::prelude::*;
 use std::convert::TryInto;  //For try_into()
@@ -24,14 +25,16 @@ fn main() {
 
     show_world(&world);
 
-    for iteration in 1..num_generations {
+    for _iteration in 0..num_generations {
         
         // code to clear screen goes here
         //print!("\x1B[2J");
+        pause();
+
 
         //iterate_generations(&world, &num_rows, &num_cols);
 
-        //show_world(&world, &num_rows, &num_cols);
+        show_world(&world);
     }
 }
 
@@ -82,3 +85,9 @@ fn show_world(world: &Vec<String>) {
 //fn iterate_generations(world: &Vec<String>, num_rows: &i32, num_cols: &i32) {
 //
 //}
+
+fn pause() {
+    println!("Press enter to advance...");
+    let mut yeet = String::new();   //gets yeeted
+    let _ = io::stdin().read_line(&mut yeet).unwrap();
+}
