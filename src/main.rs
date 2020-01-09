@@ -32,7 +32,7 @@ fn main() {
         pause();
 
 
-        iterate_generations(&world, &num_rows, &num_cols);
+        world = iterate_generations(world, &num_rows, &num_cols);
 
         show_world(&world);
     }
@@ -50,6 +50,7 @@ fn populate_world(f_name: &str, world: &mut Vec<String>, num_rows: &mut i32, num
 
     //Not sure if this is a good way to do this, error handling is wack
     *num_cols = 0;
+    *num_rows = 0;
     for line in file.lines() {
         let line = line.unwrap();
         //println!("{}", &line);
@@ -61,6 +62,14 @@ fn populate_world(f_name: &str, world: &mut Vec<String>, num_rows: &mut i32, num
                 column.push('*');
             } else {
                 panic!("Error: Unrecognized character");
+            }
+        }
+        if *num_rows == 0 {
+            *num_rows = column.len() as i32;
+        }
+        else {
+            if (column.len() as i32) != *num_rows {
+                panic!("Error, numbers of rows aren't consistent");
             }
         }
         world.push(String::from(&column));
@@ -115,12 +124,49 @@ fn count_neighbors(world: &Vec<String>, row: &i32, col: &i32, num_rows: &i32, nu
     return neighbors
 }
 
-fn iterate_generations(world: &Vec<String>, num_rows: &i32, num_cols: &i32) {
+enum NextCell {
+    Death,
+    Birth,
+    Unchanged,
+}
+
+fn decide_evolution(neighbors: i32) -> NextCell{
+    //Birth if 3 cells
+    if neighbors == 3 {
+        return NextCell::Birth
+    }
+    //Death if 4 or more
+    if neighbors >= 4 {
+        return NextCell::Death
+    }
+    //Death if less than 2
+    if neighbors < 2 {
+        return NextCell::Death
+    }
+    //Else unchanged
+    return NextCell::Unchanged
+}
+
+fn iterate_generations(world: Vec<String>, num_rows: &i32, num_cols: &i32) -> Vec<String>{
+    //Create a future world
+    let mut new_world: Vec<String> = Vec::new();
     //Iterates to the next generation
-    let row = 0;
-    let col = 0;
-    let neighbors = count_neighbors(&world, &row, &col, &num_rows, &num_cols);
-    println!("Neighbors: {}", neighbors);
+    for col in 0..*num_cols {
+        new_world.push(String::new());
+        //In case we need a specific character
+        let char_vec: Vec<char> = world[col as usize].chars().collect();
+        for row in 0..*num_rows {
+            let neighbors = count_neighbors(&world, &row, &col, &num_rows, &num_cols);
+            //println!("Col: {}\nRow: {}\n Neighbors: {}\n", col, row, neighbors);
+            match decide_evolution(neighbors) {
+                NextCell::Death => new_world[col as usize].push('.'),
+                NextCell::Birth => new_world[col as usize].push('*'),
+                NextCell::Unchanged => new_world[col as usize].push(char_vec[row as usize]),
+            };
+        }
+    }
+    //Return the new world
+    return new_world
 }
 
 fn pause() {
