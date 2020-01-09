@@ -8,12 +8,15 @@ use std::io;
 use std::io::BufReader;
 use std::io::prelude::*;
 use std::convert::TryInto;  //For try_into()
+use std::env;
 
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
     //edit these two lines and use command line arguments
-    let f_name = "world.txt";
-    let num_generations = 2; //set to a smaller number for debugging
+    let f_name = &args[1];
+    let num_generations = args[2].parse()
+        .expect("Please enter a number"); //set to a smaller number for debugging
 
     //array of strings that will hold the grid
     let mut world: Vec<String> = Vec::new();
