@@ -13,10 +13,12 @@ use std::env;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    //edit these two lines and use command line arguments
+    if args.len() == 1 {
+        panic!("Error, please enter a file and number");
+    }
     let f_name = &args[1];
     let num_generations = args[2].parse()
-        .expect("Please enter a number"); //set to a smaller number for debugging
+        .expect("Please enter a number"); 
 
     //array of strings that will hold the grid
     let mut world: Vec<String> = Vec::new();
@@ -31,8 +33,8 @@ fn main() {
     for _iteration in 0..num_generations {
         
         // code to clear screen goes here
-        //print!("\x1B[2J");
-        pause();
+        print!("\x1B[2J");
+        //pause();
 
 
         world = iterate_generations(world, &num_rows, &num_cols);
